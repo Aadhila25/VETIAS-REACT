@@ -1,4 +1,76 @@
+import { useState,useEffect } from "react"; 
+
 function App (){
+
+  const[name, setName] = useState("");
+  const[email, setEmail] = useState("");
+  const[department, setDepartment] = useState("");
+  const[age, setAge] = useState("");
+
+  const[student,setStudent] = useState([]);
+
+  const[editIndex,setEditIndex] = useState(null);
+
+  useEffect(() =>{
+    const saveStudents = 
+     JSON.parse(
+      localStorage.getItem("student")) || [];
+
+    setStudents(saveStudents);
+  }, []);
+  const handleSubmit = () => {
+    if (
+      name === "" ||
+      email === "" ||
+      department === "" ||
+      age === ""
+    ){
+      alert("please fill all fields");
+
+      return;
+    }
+    const student = {
+      name,
+      email,
+      department,
+      age
+    };
+    if(editIndex !== null) {
+      const updatedStudents = [...student];
+      updatedStudents[editIndex] = student;
+      setStudent(updatedStudents);
+      localStorage.setItem(
+        "student",
+        JSON.stringify(updatedStudents)
+      );
+      setEditIndex(null);
+    }
+    else{
+      const updatedStudents=[
+        ...students,
+        student
+      ];
+      setStudents(updatedStudents);
+
+      
+      localStorage.setItem(
+        "students",
+        JSON.stringify(updatedStudents)
+
+      );
+    }
+    setName("");
+    setEmail("");
+    setDepartment("");
+    setAge("")
+    };
+    const handleEdit = (index) =>{
+      const student = students[index];
+      setName(student.name);
+      setEmail(student.email);
+      setDepartment(student.department);
+      setAge(student.age);
+    }
   return(
     <div 
     style={{
@@ -6,7 +78,7 @@ function App (){
       margin: "30px auto",
       padding:"25px",
       borderRadius:"15px",
-      boxShadow:"0 0 15px rgba(0,0,0,0.2)"
+      boxShadow:"0 0 15px rgba(138, 34, 34, 0.67)"
     }}>
       <h1
       style={{
@@ -131,4 +203,22 @@ function App (){
       </table>
     </div>
   )
+
+const inputstyle = {
+  width: "100%",
+  padding: "10px",
+  marginBottom:"15px",
+  borderRadius:"5px",
+  border:"1px solid #9f87a3",
+  boxSizing:"border-box"
+}
+
+const buttonStyle = {
+  width:"100%",
+  padding:"12px",
+  border:"none",
+  borderRadius:"5px",
+  cursor:"pointer"
+};
+export default App;
 }
